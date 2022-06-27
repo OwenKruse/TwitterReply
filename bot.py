@@ -33,7 +33,6 @@ def bot_login():
     return api
 
 
-
 def tweet_search():
     return bot_login().search_tweets(HASHTAG)
 
@@ -41,14 +40,16 @@ def tweet_search():
 print(tweet_search())
 
 
-
-
-
 def main():
-    client = tweepy.Client(bearer_token=BTOKEN, consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET, access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET)
+    client = tweepy.Client(bearer_token=BTOKEN, consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET,
+                           access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET)
     api = bot_login()
     tweets = tweet_search()
     i = 0
+
+    # Run for 4 hours then sleep for 2 hours
+
+
     while 1 > 0:
         for tweet in tweets:
             if tweet.user.screen_name not in open("tweets.txt").read():
@@ -58,6 +59,13 @@ def main():
                     f.write(tweet.user.screen_name + "\n")
                 i += 1
                 time.sleep(60 * 15)
+                if i > 16:
+                    i = 0
+                    time.sleep(60 * 60 * 2)
+                    tweets = tweet_search()
+                    print("Sleeping for 2 hours")
+
+
 
 
 if __name__ == "__main__":
