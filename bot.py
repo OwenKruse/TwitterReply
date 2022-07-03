@@ -12,7 +12,8 @@ ACCESS_TOKEN_SECRET = "xiSjPFMZVi3wF69MnLXIa9bor4J6jUWxP4JG3WdusSNPB"  #
 HASHTAG = "#crypto"  #
 NUMBER_OF_TWEETS_TO_REPLY = 5  #
 TWEETS_TYPE = "recent"  # can be set to "mixed" or "popular" as well                       #
-BTOKEN = "AAAAAAAAAAAAAAAAAAAAAEP0cwEAAAAAd7l5gMyD4qLRlNkV3LCWvRLARI4%3DeB0hj2vejcLKoYu7XmJDsbn0ADKI2tfHqSoqalhbfFlraSuN3D"
+BTOKEN = "AAAAAAAAAAAAAAAAAAAAAEP0cwEAAAAAd7l5gMyD4qLRlNkV3LCWvRLARI4" \
+         "%3DeB0hj2vejcLKoYu7XmJDsbn0ADKI2tfHqSoqalhbfFlraSuN3D "
 CLIENTID = "R1FjSXo5WDFEaEFPcEl6SEF3c3o6MTpjaQ"
 CLIENTSECRET = "ICWvxJ1hUrSholq_MkMnzeO8TXVz27TfmoZjCXSMl4vSjS0bHK"
 ##########################################################################################
@@ -43,14 +44,12 @@ print(tweet_search())
 def main():
     client = tweepy.Client(bearer_token=BTOKEN, consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET,
                            access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET)
-    api = bot_login()
     tweets = tweet_search()
     i = 0
 
     # Run for 4 hours then sleep for 2 hours
 
-
-    while 1 > 0:
+    while i < 15:
         for tweet in tweets:
             if tweet.user.screen_name not in open("tweets.txt").read():
                 client.create_tweet(in_reply_to_tweet_id=tweets[i].id, text=tweetList[random.randint(0, 4)])
@@ -59,13 +58,8 @@ def main():
                     f.write(tweet.user.screen_name + "\n")
                 i += 1
                 time.sleep(60 * 15)
-                if i > 16:
-                    i = 0
-                    time.sleep(60 * 60 * 2)
-                    tweets = tweet_search()
-                    print("Sleeping for 2 hours")
-
-
+    time.sleep(60 * 60 * 2)
+    main()
 
 
 if __name__ == "__main__":
